@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Chat;
+use App\chatId;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,6 +17,11 @@ class ChatController extends Controller
 
     public function show($id)
     {
+       $chat_id= chatId::where("key",$id)->firstOrFail();
+
+       if ( $chat_id->first_user_id!=Auth::id() &&  $chat_id->second_user_id!=Auth::id() ) return abort(403);
+
+
         return view('chat-room',compact("id"));
     }
 
