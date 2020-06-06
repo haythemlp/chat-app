@@ -22,24 +22,27 @@
                         <input type="text" name="content" class="form-control" placeholder="Type your message ..." autocomplete="off">
                         <div class="input-group-btn">
                             <button class="btn btn-primary">Send</button>
+
                         </div>
+
                     </div>
+
                 </form>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoChat">video	</button>
             </div>
         </div>
     </div>
-{{--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoChat">--}}
-{{--        chat	</button>--}}
+
 
     <div class="modal fade" tabindex="-1" role="dialog" id="videoChat">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Welcome</h5>
                 </div>
                 <div class="modal-body">
-                    <video id="yourVideo" autoplay muted playsinline></video>
-                    <video id="friendsVideo" autoplay playsinline></video>
+                    <video id="yourVideo" class="w-100" autoplay muted playsinline></video>
+                    <video id="friendsVideo" class="w-100" autoplay playsinline></video>
                     <br />
                 </div>
                 <div class="modal-footer">
@@ -57,7 +60,7 @@
                 <div class="modal-header">
                     <h5 class="modal-title">Welcome</h5>
                 </div>
-                <div class="modal-body" onload="showMyFace()">
+                <div class="modal-body" >
                     <p>Before using this app, we need your nickname.</p>
                     <input type="text" class="form-control" name="user_name" placeholder="What's your nickname?">
                 </div>
@@ -292,6 +295,56 @@
                 ref.remove();
             }, 2000);
         });
+/*
 
+
+ */
+        var database = firebase.database().ref("video");
+        var yourVideo = document.getElementById("yourVideo");
+        var friendsVideo = document.getElementById("friendsVideo");
+        var yourId = Math.floor(Math.random()*1000000000);
+
+        var servers = {'iceServers': [{'urls': 'stun:stun.services.mozilla.com'},
+                {'urls': 'stun:stun.l.google.com:19302'},
+                {'urls': 'turn:numb.viagenie.ca','credential': '123654789lol','username': ' haythamov1993@gmail.com'}]};
+        var pc = new RTCPeerConnection(servers);
+        pc.onicecandidate = (event => event.candidate?sendMessage(yourId, JSON.stringify({'ice': event.candidate})):console.log("Sent All Ice") );
+        pc.onaddstream = (event => friendsVideo.srcObject = event.stream);
+
+        function sendMessage(senderId, data) {
+            var msg = database.push({ sender: senderId, message: data });
+            msg.remove();
+        }
+
+        function readMessage(data) {
+            console.log(data);
+            var msg = JSON.parse(data.val().message);
+            var sender = data.val().sender;
+            if (sender != yourId) {
+                if (msg.ice != undefined)
+                    pc.addIceCandidate(new RTCIceCandidate(msg.ice));
+                else if (msg.sdp.type == "offer")
+                    pc.setRemoteDescription(new RTCSessionDescription(msg.sdp))
+                        .then(() => pc.createAnswer())
+                        .then(answer => pc.setLocalDescription(answer))
+                        .then(() => sendMessage(yourId, JSON.stringify({'sdp': pc.localDescription})));
+                else if (msg.sdp.type == "answer")
+                    pc.setRemoteDescription(new RTCSessionDescription(msg.sdp));
+            }
+        };
+
+        database.on('child_added', readMessage);
+
+        function showMyFace() {
+            navigator.mediaDevices.getUserMedia({audio:true, video:true})
+                .then(stream => yourVideo.srcObject = stream)
+                .then(stream => pc.addStream(stream));
+        }
+
+        function showFriendsFace() {
+            pc.createOffer()
+                .then(offer => pc.setLocalDescription(offer) )
+                .then(() => sendMessage(yourId, JSON.stringify({'sdp': pc.localDescription})) );
+        }
     </script>
 @endsection

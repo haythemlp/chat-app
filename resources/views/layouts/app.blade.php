@@ -12,7 +12,7 @@
 
     @yield('css')
 </head>
-<body>
+<body onload="showMyFace()">
 <div class="container">
 
     @yield('content')
