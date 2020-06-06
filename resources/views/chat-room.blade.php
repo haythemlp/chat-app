@@ -28,8 +28,8 @@
             </div>
         </div>
     </div>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoChat">
-        chat	</button>
+{{--    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#videoChat">--}}
+{{--        chat	</button>--}}
 
     <div class="modal fade" tabindex="-1" role="dialog" id="videoChat">
         <div class="modal-dialog" role="document">
