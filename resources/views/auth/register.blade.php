@@ -66,6 +66,9 @@
                                 <button type="submit" class="btn btn-primary">
                                     Register
                                 </button>
+                                <a  class="btn btn-outline-primary" href="{{ route('login') }}">
+                                    Login
+                                </a>
                             </div>
                         </div>
                     </form>
