@@ -10,5 +10,5 @@ class Chat extends Model
 	use SyncsWithFirebase;
 
 	protected $table = "chats";
-	protected $fillable = ['name', 'content', 'ip', 'type'];
+	protected $fillable = ['name', 'content', 'ip', 'type','chat_id'];
 }

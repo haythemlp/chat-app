@@ -18,3 +18,5 @@ Route::post('chat/join', 'ChatController@join')->name('chat.join');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/generateChat/{id}', 'HomeController@findOrGenerateChatAppId')->name('generateChat');
+Route::get('/chat/{chat_id}', 'ChatController@show')->name('chat-room');

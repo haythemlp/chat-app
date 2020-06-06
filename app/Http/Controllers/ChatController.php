@@ -13,18 +13,23 @@ class ChatController extends Controller
         $this->middleware('auth');
     }
 
+
+    public function show($id)
+    {
+        return view('chat-room',compact("id"));
+    }
+
     public function store(Request $request)
     {
         $this->validate($request, [
             'content' => 'required',
-            'name' => 'required'
+            'name' => 'required',
+            'chat_id'=>'required'
         ]);
 
         $input = $request->all();
         $input['ip'] = request()->ip();
-        $input['type'] = 'chat';
         $input['name'] = Auth::user()->name;
-
         $chat = Chat::create($input);
         return response(['data' => $chat], 200);
     }
