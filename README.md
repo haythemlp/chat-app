@@ -1,16 +1,14 @@
-# Laravel 5 &amp; Firebase Chatroom Example
+# Laravel 5 &amp; Firebase Chatroom Example+video chat
 
-### What is this?
-This is a project experiment to create a chatroom app with Laravel 5.6 and Firebase Realtime Database. This project uses a '[laravel-firebase-sync](https://github.com/mpociot/laravel-firebase-sync)' package to synchronize models with data on firebase.
 
-### Requirements
+## Requirements
 - Laravel 5.6
 - Laravel Firebase Sync by [@mpociot](https://github.com/mpociot)
 
 ### Installation
 - Clone this repository
 ```
- git clone https://github.com/nauvalazhar/laravel-firebase-chatroom-example.git
+ git clone https://github.com/haythemlp/chat-app.git
 ```
 - Run these commands
 ```
@@ -30,6 +28,3 @@ php artisan migrate
 - Open the `config/services.php` file and adjust the details of your firebase project or see the [instructions here](https://github.com/mpociot/laravel-firebase-sync#configuration)
 - Done
 
-### License
-MIT License
-"# chat-app" 
